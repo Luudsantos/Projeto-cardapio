@@ -1,0 +1,33 @@
+/* Logo fixa no canto da tela */
+.logo-canto {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 10000;
+}
+
+.logo-canto img {
+    height: 70px;  /* Aumentado de 50px para 70px */
+    width: auto;
+    opacity: 0.8;
+}
+
+/* Logo do rodapé */
+.footer-logo img {
+    height: 70px;  /* Aumentado de 50px para 70px */
+    width: auto;
+    max-width: 140px; /* Aumentado para manter proporção */
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    transition: transform 0.3s ease;
+}
+
+.footer-logo img:hover {
+    transform: scale(1.05);
+}
+
+.logo-empresa {
+    width: 150px;
+    height: auto;
+}
+

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Rodízio Japonês - Pedido</title>
+    <link rel="stylesheet" href="menu.css"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .titulo-imagem {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .titulo-imagem img {
+            width: 100%;
+            max-width: 900px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .menu-section {
+            margin-bottom: 30px;
+        }
+        .categoria {
+            width: 100%;
+            text-align: center;
+            margin: 30px 0 15px;
+            color: #cd5a13;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .pratos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .prato {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px;
+            width: 200px;
+            text-align: center;
+        }
+        .prato img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .adicionar-pedido-btn {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #cd5a13;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .adicionar-pedido-btn:hover {
+            background-color: #d81b60;
+        }
+        #finalizar-pedido {
+            display: block;
+            margin: 30px auto;
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #cd5a13;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        #finalizar-pedido:hover {
+            background-color: #d81b60;
+        }
+        #mensagem {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+            color: red;
+            font-size: 18px;
+        }
+        .modal,
+        .modal-quantidade {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgb(250, 250, 250);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content,
+        .modal-quantidade-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 300px;
+        }
+        .modal-content h2,
+        .modal-quantidade-content h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .modal-content button,
+        .modal-quantidade-content button {
+            margin: 5px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .fechar-modal {
+            background-color: #cd5a13;
+            color: white;
+        }
+        .confirmar {
+            background-color: #2196f3;
+            color: white;
+        }
+        .confirmar-qtd-btn {
+            background-color: #4caf50;
+            color: white;
+        }
+        .cancelar-qtd-btn {
+            background-color: #9e9e9e;
+            color: white;
+        }
+        input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        textarea {
+            width: 100%;
+            padding: 5px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .informacoes {
+            margin-top: 30px;
+            text-align: center;
+            background-color:#cd5a13;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        #pesquisa {
+            display: block;
+            margin: 0 auto 20px;
+            padding: 10px;
+            font-size: 16px;
+            width: 90%;
+            max-width: 300px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const nomeCliente = localStorage.getItem('nomeCliente');
+        const numeroMesa = localStorage.getItem('numeroMesa');
+      
+        if (!nomeCliente || !numeroMesa) {
+          alert("Por favor, preencha o cadastro antes de acessar o cardápio.");
+          window.location.href = "login.html"; // redireciona se tentar burlar
+        }
+      
+        window.addEventListener("DOMContentLoaded", function () {
+          const saudacao = document.createElement("div");
+          saudacao.innerHTML = `<h2>Olá, ${nomeCliente}!</h2>`;
+          saudacao.style.textAlign = "center";
+          saudacao.style.marginBottom = "20px";
+          saudacao.style.color = "#cd5a13";
+          saudacao.style.fontWeight = "bold";
+          document.body.prepend(saudacao);
+        });
+      </script>
+      
+    <div class="titulo-imagem">
+        <img src="titulo.jpg" alt="Rodízio Japonês">
+    </div>
+    <h1>Okami Rodízio 🍣</h1>
+    <p style="text-align: center; font-size: 1.2em; color: #cd5a13; font-weight: bold;">Preço Único do Rodízio: R$ 179.90</p>
+
+    <input type="text" id="pesquisa" placeholder="Pesquisar prato...">
+
+    <p style="text-align: center; font-size: 1.0em; margin-bottom: 20px;">
+        Explore as delícias do nosso cardápio e monte seu pedido com os pratos que mais te dão água na boca.<br>
+        É só clicar em "Adicionar" e escolher a quantidade. Boa refeição!
+    </p>
+
+    <!-- Seção de Pratos Principais -->
+    <div class="menu-section">
+        <div class="categoria">Pratos Principais</div>
+            <div class="pratos" id="pratos-container">
+            <div class="prato" data-nome="Salada Japonesa">
+                <img src="prato7.jpeg.webp" alt="Salada Japonesa">
+                <h3>Salada Japonesa</h3>
+                <p class="descrição-prato"> Deliciosa salada de frango com mix de acelga, cebolinha, pimenta dedo de moça, tempero japonês (togarashi), coentro e vinagre balsâmico, reduzidos no azeite com molho teriyaki e shoyu. Uma completa explosão de sabores.</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+            <div class="prato" data-nome="Temaki Salmão Especial">
+                <img src="prato3.webp" alt="Temaki Salmão Especial">
+                <h3>Temaki Salmão Especial</h3>
+                <p class="descricao-prato">Patê de salmão com cream cheese e cebolinha enrolados em forma de cone na alga.</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+            <div class="prato" data-nome="Hot Philadelphia">
+                <img src="prato2.webp" alt="Hot Philadelphia">
+                <h3>Hot Philadelphia</h3>
+                <p class="descricao-prato">Alga, arroz, salmão, cream cheese, empanado e frito. Querido entre os clientes! Saboroso e servido quentinho com aquele cream cheese que desmancha na boca junto com a leveza do salmão. Finalizado a sua escolha e teriyaki da casa
+                </p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+            <div class="prato" data-nome="Temaki Hot">
+                <img src="prato8.jpeg.webp" alt="Temaki Hot">
+                <h3>Temaki Hot</h3>
+                <p class="descricao-prato">Alga, arroz, patê de salmão com cream cheese e cebolinha, empanado e frito.</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+            <div class="prato" data-nome="Sakai 19 peças">
+                <img src="prato5.webp" alt="Sakai 19 peças">
+                <h3>Sakai 19 peças</h3>
+                <p class="descricao-prato">5 sashimis de salmão, 5 de tilápia, 4 de peixe-prego selado e 5 de lula. Acompanha o pedido 30 ml de shoyo 30 ml de teriake</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+            <div class="prato" data-nome="Sashimi de Atum Selado com Gergelim">
+                <img src="prato1.jpeg.webp" alt="Sashimi de Atum Selado com Gergelim">
+                <h3>Sashimi de Atum Selado com Gergelim</h3>
+                <p class="descricao-prato">Lâmina de atum selada no azeite com gergelim.</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+            <div class="prato" data-nome="Yakisoba de filé">
+                <img src="prato9.webp" alt="Yakisoba de filé">
+                <h3>Yakisoba de filé</h3>
+                <p class="descricao-prato">Macarrão de yakissoba, vegetais, acelga, repolho roxo, gengibre, cebola branca, óleo de gergelim, gergelim torrado filé em cubos e molho de yakissoba.</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+            <div class="prato" data-nome="Sashimi de Atum">
+                <img src="prato10.webp" alt="Sashimi de Atum">
+                <h3>Sashimi de Atum</h3>
+                <p class="descricao-prato">Lâmina de atum.</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+            <div class="prato" data-nome="Sunomono">
+                <img src="prato11.webp" alt="Sunomono">
+                <h3>Sunomono</h3>
+                <p class="descricao-prato">Laminas de pepino e cenoura.</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+            <div class="prato" data-nome="Shimeji">
+                <img src="prato12.webp" alt="Shimeji">
+                <h3>Shimeji</h3>
+                <p class="descricao-prato">Cogumelos japoneses salteados na manteiga, Saquê, shoyu e cebolinha.</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção de Bebidas -->
+    <div class="menu-section">
+        <div class="categoria">Bebidas</div>
+        <div class="pratos" id="bebidas-container">
+            <div class="prato" data-nome="Água Mineral (500ml)">
+                <img src="agua.jpeg" alt="Água Mineral">
+                <h3>Água Mineral</h3>
+                <p>500ml</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+            <div class="prato" data-nome="Refrigerante (Lata 350ml)">
+                <img src="refri.jpeg" alt="Refrigerante">
+                <h3>Refrigerante</h3>
+                <p>Lata 350ml</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+            <div class="prato" data-nome="Suco Natural (300ml)">
+                <img src="suco.jpeg" alt="Suco Natural">
+                <h3>Suco Natural</h3>
+                <p>300ml (laranja, morango ou suco verde)</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+            <div class="prato" data-nome="Chá Gelado (500ml)">
+                <img src="cha-gelado.webp" alt="Chá Gelado">
+                <h3>Chá Gelado</h3>
+                <p>500ml (pêssego ou limão)</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+            <div class="prato" data-nome="Cerveja Japonesa (330ml)">
+                <img src="cerveja.jpg" alt="Cerveja Japonesa">
+                <h3>Cerveja Japonesa</h3>
+                <p>Sapporo, Asahi, Kirin ichiban, 330ml</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+            <div class="prato" data-nome="Saquê (180ml)">
+                <img src="saque.jpg" alt="Saquê">
+                <h3>Saquê</h3>
+                <p>Dose 180ml (quente ou frio)</p>
+                <button class="adicionar-pedido-btn">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <button id="finalizar-pedido">Finalizar Pedido - R$ 179.90</button>
+    <div id="mensagem"></div>
+
+    <!-- Modal de Quantidade -->
+    <div id="modal-quantidade" class="modal-quantidade">
+        <div class="modal-quantidade-content">
+            <h3 id="modal-quantidade-nome">Quantidade de:</h3>
+            <input type="number" id="input-quantidade" min="1" value="1">
+            <br>
+            <label for="observacoes">Observações:</label><br>
+            <textarea id="observacoes" rows="3" placeholder="Alguma observação?"></textarea>
+            <br>
+            <button class="confirmar-qtd-btn">Confirmar</button>
+            <button class="cancelar-qtd-btn">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2>Resumo do Pedido</h2>
+            <div id="resumo-pedido"></div>
+            <button class="confirmar">Confirmar</button>
+            <button class="fechar-modal">Cancelar</button>
+        </div>
+    </div>
+
+    <div class="informacoes">
+        <div class="logo-container">
+            <img src="logo NeoMesa.png" alt="logo da empresa" id="logo-empresa" style="width:100px;height:100px;">
+        </div>
+        <div class="info-texto">
+            <p><strong>Endereço:</strong> Avenida Deputado Jamel Cecilio, 2370 - Jardim Goias - Goiânia/GO</p>
+            <p><strong>Horário de Funcionamento:</strong> Segunda a Sexta, das 11h às 22h | Sábado e Domingo, das 12h às 23h</p>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos do DOM
+            const adicionarPedidoBotoes = document.querySelectorAll('.adicionar-pedido-btn');
+            const modalQuantidade = document.getElementById('modal-quantidade');
+            const modalQuantidadeNome = document.getElementById('modal-quantidade-nome');
+            const inputQuantidade = document.getElementById('input-quantidade');
+            const observacoesInput = document.getElementById('observacoes');
+            const modalConfirmacao = document.getElementById('modal');
+            const resumoPedidoDiv = document.getElementById('resumo-pedido');
+            const mensagemDiv = document.getElementById('mensagem');
+            const finalizarPedidoBtn = document.getElementById('finalizar-pedido');
+            const campoPesquisaInput = document.getElementById('pesquisa');
+            const pratosDiv = document.querySelectorAll('.prato');
+
+            // Variáveis de estado
+            let itemSelecionado = null;
+            let pedidoItens = {};
+            const precoRodizio = 179.90;
+
+            // Event Listeners
+            campoPesquisaInput.addEventListener('input', filtrarPratos);
+            finalizarPedidoBtn.addEventListener('click', enviarPedido);
+            document.querySelector('.confirmar-qtd-btn').addEventListener('click', adicionarQuantidade);
+            document.querySelector('.cancelar-qtd-btn').addEventListener('click', fecharModalQuantidade);
+            document.querySelector('.confirmar').addEventListener('click', confirmarPedido);
+            document.querySelector('.fechar-modal').addEventListener('click', fecharModal);
+
+            // Adicionar eventos aos botões de adicionar pedido
+            adicionarPedidoBotoes.forEach(botao => {
+                botao.addEventListener('click', function() {
+                    const pratoDiv = this.closest('.prato');
+                    itemSelecionado = pratoDiv.dataset.nome;
+                    modalQuantidadeNome.textContent = `Quantidade de ${itemSelecionado}:`;
+                    inputQuantidade.value = 1;
+                    observacoesInput.value = '';
+                    modalQuantidade.style.display = 'flex';
+                });
+            });
+
+            // Funções
+            function filtrarPratos() {
+                const pesquisa = campoPesquisaInput.value.toLowerCase();
+                let algumVisivel = false;
+
+                pratosDiv.forEach(prato => {
+                    const nomePrato = prato.querySelector('h3').textContent.toLowerCase();
+                    if (nomePrato.includes(pesquisa)) {
+                        prato.style.display = 'block';
+                        algumVisivel = true;
+                    } else {
+                        prato.style.display = 'none';
+                    }
+                });
+
+                mensagemDiv.textContent = algumVisivel ? "" : "Nenhum item encontrado.";
+                mensagemDiv.style.color = "red";
+            }
+
+            function adicionarQuantidade() {
+                if (itemSelecionado) {
+                    const quantidade = parseInt(inputQuantidade.value);
+                    const observacao = observacoesInput.value.trim();
+
+                    if (quantidade > 0) {
+                        if (!pedidoItens[itemSelecionado]) {
+                            pedidoItens[itemSelecionado] = { quantidade: 0, observacoes: [] };
+                        }
+                        pedidoItens[itemSelecionado].quantidade += quantidade;
+                        if (observacao) {
+                            pedidoItens[itemSelecionado].observacoes.push(observacao);
+                        }
+
+                        mensagemDiv.style.color = 'green';
+                        mensagemDiv.textContent = "Item adicionado ao pedido!";
+                        fecharModalQuantidade();
+                    } else {
+                        alert('Por favor, insira uma quantidade válida.');
+                    }
+                }
+            }
+
+            function fecharModalQuantidade() {
+                modalQuantidade.style.display = 'none';
+                itemSelecionado = null;
+            }
+
+            function enviarPedido() {
+                resumoPedidoDiv.innerHTML = '';
+                
+                if (Object.keys(pedidoItens).length === 0) {
+                    mensagemDiv.textContent = 'Seu carrinho está vazio. Adicione itens ao pedido.';
+                    mensagemDiv.style.color = 'red';
+                    return;
+                }
+
+                for (const item in pedidoItens) {
+                    const detalhesItem = pedidoItens[item];
+                    const itemResumo = document.createElement('p');
+                    itemResumo.innerHTML = `<strong>${item}:</strong> ${detalhesItem.quantidade}`;
+                    if (detalhesItem.observacoes.length > 0) {
+                        itemResumo.innerHTML += `<br><small>Observações: ${detalhesItem.observacoes.join(', ')}</small>`;
+                    }
+                    resumoPedidoDiv.appendChild(itemResumo);
+                }
+
+                const precoTotalElement = document.createElement('p');
+                precoTotalElement.innerHTML = `<hr><strong>Preço do Rodízio: R$ ${precoRodizio.toFixed(2)}</strong>`;
+                resumoPedidoDiv.appendChild(precoTotalElement);
+
+                mensagemDiv.textContent = 'Confirme seu pedido:';
+                mensagemDiv.style.color = 'orange';
+                modalConfirmacao.style.display = 'flex';
+            }
+
+            function confirmarPedido() {
+                let mensagemFinal = `Pedido confirmado!\n\nItens:\n`;
+                for (const item in pedidoItens) {
+                    mensagemFinal += `- ${item}: ${pedidoItens[item].quantidade}`;
+                    if (pedidoItens[item].observacoes.length > 0) {
+                        mensagemFinal += ` (${pedidoItens[item].observacoes.join(', ')})`;
+                    }
+                    mensagemFinal += `\n`;
+                }
+                mensagemFinal += `\nTotal do rodízio: R$ ${precoRodizio.toFixed(2)}`;
+
+                alert(mensagemFinal);
+                pedidoItens = {};
+                fecharModal();
+                mensagemDiv.textContent = 'Pedido confirmado com sucesso!';
+                mensagemDiv.style.color = 'green';
+            }
+
+            function fecharModal() {
+                modalConfirmacao.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
+

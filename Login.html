@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Restaurante Okami</title>
+  <link rel="stylesheet" href="menu.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: url('titulo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 40px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-container h2 {
+      text-align: center;
+      color: #cd5a13;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #cd5a13;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #d81b60;
+    }
+
+    .footer-logo {
+      margin-top: 20px;
+      opacity: 0.08;
+      width: 180px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h2>Bem-vindo ao Okami</h2>
+    <form id="loginForm">
+      <label for="nome">Nome do Cliente:</label>
+      <input type="text" id="nome" name="nome" required>
+
+      <label for="nome">Mesa:</label>
+      <input type="text" id="mesa" name="mesa" required>
+
+      <label for="telefone">Número de Telefone:</label>
+      <input type="tel" id="telefone" name="telefone" required>
+
+      <button type="submit">Entrar</button>
+    </form>
+
+    <!-- Marca d'água -->
+    <div style="text-align: center;">
+      <img src="logo%20NeoMesa.png" alt="Marca d'água Okami" class="footer-logo">
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const nome = document.getElementById('nome').value;
+      const telefone = document.getElementById('telefone').value;
+
+      // Salva no localStorage
+      localStorage.setItem('nomeCliente', nome);
+      localStorage.setItem('numeroTelefone', telefone);
+
+      // Redireciona para o cardápio
+      window.location.href = 'menu.html';
+    });
+  </script>
+
+</body>
+</html>
