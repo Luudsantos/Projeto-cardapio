@@ -468,16 +468,32 @@
 
             function confirmarPedido() {
                 let mensagemFinal = `Pedido confirmado!\n\nItens:\n`;
+                let itensPedido = [];
                 for (const item in pedidoItens) {
                     mensagemFinal += `- ${item}: ${pedidoItens[item].quantidade}`;
                     if (pedidoItens[item].observacoes.length > 0) {
                         mensagemFinal += ` (${pedidoItens[item].observacoes.join(', ')})`;
                     }
                     mensagemFinal += `\n`;
+                    itensPedido.push({
+                        nome: item,
+                        quantidade: pedidoItens[item].quantidade,
+                        observacoes: pedidoItens[item].observacoes
+                    });
                 }
                 mensagemFinal += `\nTotal do rodízio: R$ ${precoRodizio.toFixed(2)}`;
 
                 alert(mensagemFinal);
+
+                // Salvar pedido no localStorage
+                const nomeCliente = localStorage.getItem('nomeCliente');
+                const numeroMesa = localStorage.getItem('numeroMesa');
+                const total = precoRodizio;
+
+                const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+                pedidos.push({ nomeCliente, numeroMesa, itens: itensPedido, total });
+                localStorage.setItem('pedidos', JSON.stringify(pedidos));
+
                 pedidoItens = {};
                 fecharModal();
                 mensagemDiv.textContent = 'Pedido confirmado com sucesso!';

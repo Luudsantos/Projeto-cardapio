@@ -15,6 +15,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      position: relative; /* Para posicionar o botão Admin */
     }
 
     .login-container {
@@ -71,9 +72,31 @@
       opacity: 0.08;
       width: 180px;
     }
+
+    /* Estilo para o botão de administrador */
+    .admin-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 15px;
+      background-color: #cd5a13;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      z-index: 10;
+    }
+
+    .admin-button:hover {
+      background-color: #d81b60;
+    }
   </style>
 </head>
 <body>
+
+  <button class="admin-button" onclick="window.location.href='Admin.html'">Admin</button>
 
   <div class="login-container">
     <h2>Bem-vindo ao Okami</h2>
@@ -81,7 +104,7 @@
       <label for="nome">Nome do Cliente:</label>
       <input type="text" id="nome" name="nome" required>
 
-      <label for="nome">Mesa:</label>
+      <label for="mesa">Mesa:</label>
       <input type="text" id="mesa" name="mesa" required>
 
       <label for="telefone">Número de Telefone:</label>
@@ -100,10 +123,12 @@
     document.getElementById('loginForm').addEventListener('submit', function(event) {
       event.preventDefault();
       const nome = document.getElementById('nome').value;
+      const mesa = document.getElementById('mesa').value;
       const telefone = document.getElementById('telefone').value;
 
       // Salva no localStorage
       localStorage.setItem('nomeCliente', nome);
+      localStorage.setItem('numeroMesa', mesa);
       localStorage.setItem('numeroTelefone', telefone);
 
       // Redireciona para o cardápio
@@ -113,3 +138,4 @@
 
 </body>
 </html>
+
