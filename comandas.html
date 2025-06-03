@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Comandas - Restaurante Okami</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #cd5a13 0%, #d81b60 100%);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+    .container {
+      background-color: rgba(0,0,0,0.75);
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+      font-weight: 700;
+      font-size: 28px;
+      letter-spacing: 1px;
+      color: #ffb74d;
+      text-shadow: 0 0 8px rgba(255,183,77,0.8);
+    }
+    .comandas-container {
+      max-height: 400px;
+      overflow-y: auto;
+      background: #fff;
+      color: #333;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 30px;
+      text-align: left;
+    }
+    .pedido {
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+    }
+    .pedido:last-child {
+      border-bottom: none;
+    }
+    .pedido h3 {
+      color: #cd5a13;
+      margin-bottom: 8px;
+    }
+    .pedido ul {
+      padding-left: 20px;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Comandas Recebidas</h2>
+    <div class="comandas-container" id="comandasView"></div>
+  </div>
+
+  <script>
+    function carregarComandas() {
+      const pedidosContainer = document.getElementById('comandasView');
+      const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+
+      if (pedidos.length === 0) {
+        pedidosContainer.innerHTML = '<p style="text-align: center; color:#cd5a13;">Nenhum pedido encontrado.</p>';
+        return;
+      }
+
+      pedidosContainer.innerHTML = '';
+
+      pedidos.forEach((pedido, index) => {
+        const pedidoDiv = document.createElement('div');
+        pedidoDiv.classList.add('pedido');
+        let itensHtml = '<ul>';
+        pedido.itens.forEach(item => {
+          itensHtml += `<li>${item.nome} - Quantidade: ${item.quantidade}`;
+          if(item.observacoes && item.observacoes.length > 0) {
+            itensHtml += ` (Obs: ${item.observacoes.join(', ')})`;
+          }
+          itensHtml += '</li>';
+        });
+        itensHtml += '</ul>';
+
+        pedidoDiv.innerHTML = `
+          <h3>Pedido #${index+1} - ${pedido.nomeCliente} - Mesa ${pedido.numeroMesa}</h3>
+          <p><strong>Itens:</strong></p>
+          ${itensHtml}
+          
+        `;
+        pedidosContainer.appendChild(pedidoDiv);
+      });
+    }
+
+    // Chama assim que a página carrega
+    carregarComandas();
+  </script>
+
+</body>
+</html>

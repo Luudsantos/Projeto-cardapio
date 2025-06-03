@@ -15,7 +15,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      position: relative; /* Para posicionar o botão Admin */
+      position: relative;
     }
 
     .login-container {
@@ -73,7 +73,6 @@
       width: 180px;
     }
 
-    /* Estilo para o botão de administrador */
     .admin-button {
       position: absolute;
       top: 20px;
@@ -96,7 +95,8 @@
 </head>
 <body>
 
-  <button class="admin-button" onclick="window.location.href='Admin.html'">Admin</button>
+  <!-- Botão atualizado para "Comandas" -->
+  <button class="admin-button" onclick="window.location.href='comandas.html'">Comandas</button>
 
   <div class="login-container">
     <h2>Bem-vindo ao Okami</h2>
@@ -113,7 +113,6 @@
       <button type="submit">Entrar</button>
     </form>
 
-    <!-- Marca d'água -->
     <div style="text-align: center;">
       <img src="logo%20NeoMesa.png" alt="Marca d'água Okami" class="footer-logo">
     </div>
@@ -126,16 +125,13 @@
       const mesa = document.getElementById('mesa').value;
       const telefone = document.getElementById('telefone').value;
 
-      // Salva no localStorage
       localStorage.setItem('nomeCliente', nome);
       localStorage.setItem('numeroMesa', mesa);
       localStorage.setItem('numeroTelefone', telefone);
 
-      // Redireciona para o cardápio
       window.location.href = 'menu.html';
     });
   </script>
 
 </body>
 </html>
-

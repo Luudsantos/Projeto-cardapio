@@ -315,7 +315,7 @@
         </div>
     </div>
 
-    <button id="finalizar-pedido">Finalizar Pedido - R$ 179.90</button>
+    <button id="finalizar-pedido">Finalizar Pedido</button>
     <div id="mensagem"></div>
 
     <!-- Modal de Quantidade -->
@@ -369,7 +369,6 @@
             // Variáveis de estado
             let itemSelecionado = null;
             let pedidoItens = {};
-            const precoRodizio = 179.90;
 
             // Event Listeners
             campoPesquisaInput.addEventListener('input', filtrarPratos);
@@ -457,10 +456,7 @@
                     resumoPedidoDiv.appendChild(itemResumo);
                 }
 
-                const precoTotalElement = document.createElement('p');
-                precoTotalElement.innerHTML = `<hr><strong>Preço do Rodízio: R$ ${precoRodizio.toFixed(2)}</strong>`;
-                resumoPedidoDiv.appendChild(precoTotalElement);
-
+                
                 mensagemDiv.textContent = 'Confirme seu pedido:';
                 mensagemDiv.style.color = 'orange';
                 modalConfirmacao.style.display = 'flex';
@@ -481,17 +477,15 @@
                         observacoes: pedidoItens[item].observacoes
                     });
                 }
-                mensagemFinal += `\nTotal do rodízio: R$ ${precoRodizio.toFixed(2)}`;
-
-                alert(mensagemFinal);
+        
 
                 // Salvar pedido no localStorage
                 const nomeCliente = localStorage.getItem('nomeCliente');
                 const numeroMesa = localStorage.getItem('numeroMesa');
-                const total = precoRodizio;
+                
 
                 const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
-                pedidos.push({ nomeCliente, numeroMesa, itens: itensPedido, total });
+                pedidos.push({ nomeCliente, numeroMesa, itens: itensPedido, });
                 localStorage.setItem('pedidos', JSON.stringify(pedidos));
 
                 pedidoItens = {};
